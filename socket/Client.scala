@@ -1,28 +1,23 @@
-import java.util.List;
-import java.util.ArrayList;
-import java.io.DataInputStream;
-import java.net.ServerSocket;
-object Client {
-  def main(args:Array[String]) : Unit = {
-    val port:Int = 4444;
+import java.io.DataOutputStream;
+import java.net.Socket;
+
+object Client { 
+  def main(args: Array[String]) : Unit = {
     try {
-      val socket = new ServerSocket (port)
-    
-      val s = socket.accept();
-    
-      val dis = new DataInputStream(s.getInputStream());
+      val socket = new Socket ("localhost",4444);
 
-      val str:String = dis.readUTF();
+      val dos = new DataOutputStream(socket.getOutputStream());
 
-      println("msg : "+str);
+      dos.writeUTF("Hello world");
+
+      dos.flush();
+      dos.close();
 
       socket.close();
-    }
-    catch {
-      case e : Exception =>{
-    
-        println(e.printStackTrace())
-       }
+    } catch {
+      case x:Exception=> {
+        x.printStackTrace();
+      }
     }
   }
 }
